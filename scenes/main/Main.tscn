@@ -29,8 +29,9 @@ position = Vector2( 122.619, 54.6772 )
 [node name="Farmland3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 131.678, 32.0298 )
 
-[node name="UI" type="Node2D" parent="."]
+[node name="UI" type="Node" parent="."]
 
 [node name="Play_UI" parent="UI" instance=ExtResource( 4 )]
+anchor_bottom = 0.0
 [connection signal="got_item" from="Player" to="." method="_on_Player_got_item"]
 [connection signal="got_score" from="Player" to="." method="_on_Player_got_score"]
