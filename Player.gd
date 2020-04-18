@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal got_score
+
 var velocity = Vector2.ZERO
 
 const MAX_SPEED = 50
@@ -38,6 +40,7 @@ func _process(delta):
 			#Increment the score by the crop's worth and call the crop's built in "harvest" function
 			var received_points = closest_crop.harvest()
 			score += received_points
+			emit_signal("got_score",score)
 		elif !touching_list_farmland.empty():
 			var closest_farmland = return_closest_touching(touching_list_farmland)
 			

@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/crop/Crop.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/farmland/Farmland.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/ui/play_ui/Play_UI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/main/Main.gd" type="Script" id=5]
 
 [node name="Main" type="Node2D"]
+script = ExtResource( 5 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 74.3068, 26.7648 )
@@ -25,3 +28,8 @@ position = Vector2( 122.619, 54.6772 )
 
 [node name="Farmland3" parent="." instance=ExtResource( 3 )]
 position = Vector2( 131.678, 32.0298 )
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="Play_UI" parent="UI" instance=ExtResource( 4 )]
+[connection signal="got_score" from="Player" to="." method="_on_Player_got_score"]
