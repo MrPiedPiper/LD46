@@ -8,21 +8,6 @@
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 74.3068, 26.7648 )
 
-[node name="Crop" parent="Player" instance=ExtResource( 1 )]
-position = Vector2( 5.8423, 42.207 )
-
-[node name="Crop2" parent="Player" instance=ExtResource( 1 )]
-position = Vector2( 35.9309, 44.7952 )
-
-[node name="Crop3" parent="Player" instance=ExtResource( 1 )]
-position = Vector2( -32.0111, 63.2367 )
-
-[node name="Crop4" parent="Player" instance=ExtResource( 1 )]
-position = Vector2( -34.2759, 68.4132 )
-
-[node name="Crop5" parent="Player" instance=ExtResource( 1 )]
-position = Vector2( -26.1875, 81.3546 )
-
 [node name="Crop" parent="." instance=ExtResource( 1 )]
 position = Vector2( 83.0999, 58.6737 )
 growth_time = 1
@@ -34,3 +19,18 @@ growth_time = 1
 [node name="Crop3" parent="." instance=ExtResource( 1 )]
 position = Vector2( 109.178, 44.4136 )
 growth_time = 1
+
+[node name="Crop4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 80.1491, 68.9718 )
+
+[node name="Crop5" parent="." instance=ExtResource( 1 )]
+position = Vector2( 110.238, 71.56 )
+
+[node name="Crop6" parent="." instance=ExtResource( 1 )]
+position = Vector2( 42.2957, 90.0015 )
+
+[node name="Crop7" parent="." instance=ExtResource( 1 )]
+position = Vector2( 40.0309, 95.178 )
+
+[node name="Crop8" parent="." instance=ExtResource( 1 )]
+position = Vector2( 48.1193, 108.119 )
