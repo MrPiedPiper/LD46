@@ -1,0 +1,26 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://scenes/Placeholder/crop_placeholder-Sheet.png" type="Texture" id=1]
+[ext_resource path="res://scenes/crop/Crop.gd" type="Script" id=2]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 4.0
+height = 6.25
+
+[node name="Crop" type="Node2D"]
+script = ExtResource( 2 )
+frame_count = 3
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+hframes = 3
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 1 )
+disabled = true
+
+[node name="GrowthTimer" type="Timer" parent="."]
+one_shot = true
+[connection signal="timeout" from="GrowthTimer" to="." method="_on_GrowthTimer_timeout"]
