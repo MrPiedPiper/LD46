@@ -32,4 +32,5 @@ position = Vector2( 131.678, 32.0298 )
 [node name="UI" type="Node2D" parent="."]
 
 [node name="Play_UI" parent="UI" instance=ExtResource( 4 )]
+[connection signal="got_item" from="Player" to="." method="_on_Player_got_item"]
 [connection signal="got_score" from="Player" to="." method="_on_Player_got_score"]
