@@ -7,7 +7,9 @@
 radius = 4.0
 height = 6.25
 
-[node name="Crop" type="Node2D"]
+[node name="Crop" type="Node2D" groups=[
+"crop",
+]]
 script = ExtResource( 2 )
 frame_count = 3
 

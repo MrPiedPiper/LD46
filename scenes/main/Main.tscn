@@ -1,3 +1,36 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/crop/Crop.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scenes/player/Player.tscn" type="PackedScene" id=2]
 
 [node name="Main" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 74.3068, 26.7648 )
+
+[node name="Crop" parent="Player" instance=ExtResource( 1 )]
+position = Vector2( 5.8423, 42.207 )
+
+[node name="Crop2" parent="Player" instance=ExtResource( 1 )]
+position = Vector2( 35.9309, 44.7952 )
+
+[node name="Crop3" parent="Player" instance=ExtResource( 1 )]
+position = Vector2( -32.0111, 63.2367 )
+
+[node name="Crop4" parent="Player" instance=ExtResource( 1 )]
+position = Vector2( -34.2759, 68.4132 )
+
+[node name="Crop5" parent="Player" instance=ExtResource( 1 )]
+position = Vector2( -26.1875, 81.3546 )
+
+[node name="Crop" parent="." instance=ExtResource( 1 )]
+position = Vector2( 83.0999, 58.6737 )
+growth_time = 1
+
+[node name="Crop2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 77.5313, 58.1765 )
+growth_time = 1
+
+[node name="Crop3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 109.178, 44.4136 )
+growth_time = 1
