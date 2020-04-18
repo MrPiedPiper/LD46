@@ -1,7 +1,7 @@
 extends Node2D
 
 onready var ui_play = $UI/Play_UI
-onready var player = $Player
+onready var player = $YSort/Player
 
 var score = 0
 

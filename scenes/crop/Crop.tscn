@@ -14,10 +14,12 @@ script = ExtResource( 2 )
 frame_count = 3
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, -6 )
 texture = ExtResource( 1 )
 hframes = 3
 
 [node name="Area2D" type="Area2D" parent="."]
+position = Vector2( 0, -6 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
