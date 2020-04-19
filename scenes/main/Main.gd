@@ -2,9 +2,24 @@ extends Node2D
 
 onready var ui_play = $UI/Play_UI
 onready var player = $YSort/Player
+onready var camera = $Camera2D
+onready var camera_tween = $Camera2D/Tween
 
 var score = 0
 
+var camera_dimensions = Vector2(160,96)
+onready var camera_official_position = camera.position
+
+func _process(delta):
+	var curr_camera_test = Vector2(stepify(player.position.x-camera_dimensions.x,camera_dimensions.x*2)+camera_dimensions.x,stepify(player.position.y-camera_dimensions.y,camera_dimensions.y*2)+camera_dimensions.y)
+	if !camera_tween.is_active() and camera_official_position != curr_camera_test:
+		camera_tween.interpolate_property(camera,"position",camera.position,curr_camera_test,0.5,Tween.TRANS_QUAD,Tween.EASE_IN_OUT)
+		camera_tween.start()
+		camera_official_position = curr_camera_test
+		get_tree().paused = true
+		yield(camera_tween, "tween_completed")
+		get_tree().paused = false
+		
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
