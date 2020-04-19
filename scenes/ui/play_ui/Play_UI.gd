@@ -1,8 +1,10 @@
 extends Control
 
-onready var inventory_count_parent = $CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventoryCountHBoxContainer
-onready var inventory_size_parent = $CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventorySizeHBoxContainer
-onready var score_count_parent = $CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer2/ScoreCountHBoxContainer
+onready var inventory_count_parent = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventoryCountHBoxContainer
+onready var inventory_size_parent = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventorySizeHBoxContainer
+onready var score_count_parent = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer2/ScoreCountHBoxContainer
+onready var equipped_texture_rect = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer2/InventoryHBoxContainer/CenterContainer/EquippedScaleParent/EquippedTextureRect
+onready var animation_player = $AnimationPlayer
 
 export var number_texture:Texture
 
@@ -36,3 +38,8 @@ func add_numbers(number:int,parent_node):
 		new_texture.size_flags_vertical = SIZE_SHRINK_CENTER
 		new_texture.texture = number_dict[i]
 		parent_node.add_child(new_texture)
+
+func set_equipped(new_texture:Texture):
+	animation_player.stop(true)
+	animation_player.play("scroll_inventory")
+	equipped_texture_rect.texture=new_texture

@@ -14,10 +14,13 @@ script = ExtResource( 2 )
 [node name="Hand" type="Node2D" parent="."]
 position = Vector2( 0.297695, -3.15555 )
 
-[node name="Offset" type="Node2D" parent="Hand"]
+[node name="ToolOffset" type="Node2D" parent="Hand"]
 position = Vector2( 10.7, -4.84 )
 
-[node name="Hoe" parent="Hand/Offset" instance=ExtResource( 3 )]
+[node name="Hoe" parent="Hand/ToolOffset" instance=ExtResource( 3 )]
+
+[node name="ItemOffset" type="Node2D" parent="Hand"]
+position = Vector2( 3.7703, -6.77116 )
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 0, -8 )
@@ -34,6 +37,6 @@ shape = SubResource( 1 )
 position = Vector2( 0, -1.5 )
 rotation = -1.5708
 shape = SubResource( 1 )
-[connection signal="swung" from="Hand/Offset/Hoe" to="." method="_on_Hoe_swung"]
+[connection signal="swung" from="Hand/ToolOffset/Hoe" to="." method="_on_Hoe_swung"]
 [connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
 [connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]

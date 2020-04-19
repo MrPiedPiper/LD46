@@ -28,15 +28,15 @@ func _process(delta):
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	ui_play.set_inventory_max(player.inventory_size)
+	ui_play.set_inventory_max(player.sellable_size)
 
 func _on_Player_got_score(new_score):
 	score = new_score
 	ui_play.set_score(score)
 
 func _on_Player_got_item(new_item):
-	ui_play.set_inventory_curr(player.inventory_list.size())
-	ui_play.set_inventory_max(player.inventory_size)
+	ui_play.set_inventory_curr(player.sellable_list.size())
+	ui_play.set_inventory_max(player.sellable_size)
 
 func _on_Player_deposited_in_bin():
 	#Play the animation
@@ -44,13 +44,13 @@ func _on_Player_deposited_in_bin():
 	#Add up all the points 
 	var money_gained = 0
 	#Set the score variable
-	for i in player.inventory_list:
+	for i in player.sellable_list:
 		money_gained += i.item_value
 	#Set the points on the UI
 	score += money_gained
 	ui_play.set_score(score)
 	#Clear the player's inventory
-	player.inventory_list.clear()
+	player.on_deposited()
 	ui_play.set_inventory_curr(0)
 
 func _on_Player_swung_tool(impact_pos):
@@ -60,3 +60,6 @@ func _on_Player_swung_tool(impact_pos):
 		var new_farmland = farmland.instance()
 		farmland_parent.add_child(new_farmland)
 		new_farmland.global_position = Vector2(stepify(impact_pos.x-8,16)+8,stepify(impact_pos.y-8,16)+8)
+
+func _on_Player_scrolled_inventory(item):
+	ui_play.set_equipped(item.item_icon)

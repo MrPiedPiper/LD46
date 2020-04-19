@@ -9,6 +9,7 @@ export var growth_time = 10
 #Plant value
 export var plant_value = 10
 export var plant_image:Texture
+export var plant_icon:Texture
 export var frame_count:int = 1
 
 # Called when the node enters the scene tree for the first time.
