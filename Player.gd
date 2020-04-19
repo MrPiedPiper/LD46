@@ -51,7 +51,7 @@ func _process(delta):
 	velocity = move_and_slide(velocity)
 	
 	if Input.is_action_just_pressed("action_interact"):
-		if is_touching_bin:
+		if is_touching_bin and inventory_list.size() > 0:
 			#Get specific item to deposit?
 			emit_signal("deposited_in_bin")
 			
@@ -63,7 +63,7 @@ func _process(delta):
 			var new_item = inventory_item.new("Test crop",closest_crop.plant_image,closest_crop.plant_value)
 			inventory_list.append(new_item)
 			score += received_points
-			emit_signal("got_score",score)
+			#emit_signal("got_score",score)
 			emit_signal("got_item",new_item)
 		elif !touching_list_farmland.empty():
 			var closest_farmland = return_closest_touching(touching_list_farmland)
@@ -109,7 +109,7 @@ func _on_Area2D_area_entered(area):
 #When an area is exited
 func _on_Area2D_area_exited(area):
 	#If the owner of the area touched area's null or the owner is in the "bin" group
-	if area.owner.is_in_group("bin"):
+	if area.owner != null and area.owner.is_in_group("bin"):
 		is_touching_bin = false
 	#If the owner of the area touched area's owner is null (due to being deleted) or is in the "crop" group
 	if area.owner == null or area.owner.is_in_group("crop"):

@@ -35,4 +35,16 @@ func _on_Player_got_item(new_item):
 	ui_play.set_inventory_max(player.inventory_size)
 
 func _on_Player_deposited_in_bin():
+	#Play the animation
 	bin.play_deposit()
+	#Add up all the points 
+	var money_gained = 0
+	#Set the score variable
+	for i in player.inventory_list:
+		money_gained += i.item_value
+	#Set the points on the UI
+	score += money_gained
+	ui_play.set_score(score)
+	#Clear the player's inventory
+	player.inventory_list.clear()
+	ui_play.set_inventory_curr(0)
