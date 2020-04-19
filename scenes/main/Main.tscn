@@ -590,7 +590,7 @@ tile_data = PoolIntArray( -21, 0, 0, -20, 0, 1, -19, 0, 1, -18, 0, 1, -17, 0, 1,
 [node name="YSort" type="YSort" parent="."]
 
 [node name="Player" parent="YSort" instance=ExtResource( 2 )]
-position = Vector2( 112, 64 )
+position = Vector2( 152, 184 )
 
 [node name="Farmland" type="YSort" parent="YSort"]
 
@@ -629,5 +629,12 @@ position = Vector2( 296, 152 )
 
 [node name="Farmland16" parent="YSort/Farmland" instance=ExtResource( 3 )]
 position = Vector2( 296, 168 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+pause_mode = 2
+position = Vector2( 160, 96 )
+current = true
+
+[node name="Tween" type="Tween" parent="Camera2D"]
 [connection signal="got_item" from="YSort/Player" to="." method="_on_Player_got_item"]
 [connection signal="got_score" from="YSort/Player" to="." method="_on_Player_got_score"]
