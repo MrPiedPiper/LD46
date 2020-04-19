@@ -55,8 +55,7 @@ class sellable_item:
 var score = 0
 
 func _process(delta):
-	if !is_swinging_hoe:
-		move_state(delta)
+	move_state(delta)
 	
 	if Input.is_action_just_pressed("action_interact"):
 		if is_touching_bin and sellable_list.size() > 0:
@@ -80,8 +79,6 @@ func _process(delta):
 	if Input.is_action_just_pressed("action_hit"):
 		var curr_tool = inventory_list[0]
 		if curr_tool != null and curr_tool.get("is_tool") != null and curr_tool.get("is_tool"):
-			print("That's totally a hoe")
-			print(curr_tool.name)
 			if curr_tool == hoe:
 				is_swinging_hoe = true
 				velocity = Vector2.ZERO
@@ -108,29 +105,40 @@ func _input(event):
 			var temp = new_array.pop_back()
 			new_array.push_front(temp)
 			new_equipped = new_array[0]
-		if curr_equipped != null: 
-			var is_tool = curr_equipped.get("is_tool")
-			if is_tool == null or (is_tool != null and !is_tool) or (is_tool != null and is_tool and !curr_equipped.get("is_busy")):
-				if new_equipped is sellable_item:
-					for i in tool_parent.get_children():
-						i.visible = false
-					for i in item_parent.get_children():
-						item_parent.remove_child(i)
-					var new_item = Sprite.new()
-					new_item.texture = new_equipped.item_icon
-					item_parent.add_child(new_item)
-					inventory_list = new_array
-					emit_signal("scrolled_inventory",new_equipped)
-				elif new_equipped.get("is_tool") != null and new_equipped.get("is_tool"):
-					for i in tool_parent.get_children():
-						i.visible = false
-					for i in item_parent.get_children():
-						item_parent.remove_child(i)
-					inventory_list = new_array
-					new_equipped.visible = true
-					emit_signal("scrolled_inventory",new_equipped)
+		if curr_equipped != null:
+			update_held_item(new_array)
+
+func update_held_item(new_array):
+	var curr_equipped = inventory_list[0]
+	var new_equipped = new_array[0]
+	if curr_equipped != null: 
+		var is_tool = curr_equipped.get("is_tool")
+		if is_tool == null or (is_tool != null and !is_tool) or (is_tool != null and is_tool and !curr_equipped.get("is_busy")):
+			if new_equipped is sellable_item:
+				for i in tool_parent.get_children():
+					i.visible = false
+				for i in item_parent.get_children():
+					item_parent.remove_child(i)
+				var new_item = Sprite.new()
+				new_item.texture = new_equipped.item_icon
+				item_parent.add_child(new_item)
+				inventory_list = new_array
+				emit_signal("scrolled_inventory",new_equipped)
+			elif new_equipped.get("is_tool") != null and new_equipped.get("is_tool"):
+				for i in tool_parent.get_children():
+					i.visible = false
+				for i in item_parent.get_children():
+					item_parent.remove_child(i)
+				inventory_list = new_array
+				new_equipped.visible = true
+				emit_signal("scrolled_inventory",new_equipped)
+	
 
 func move_state(delta):
+	if is_swinging_hoe:
+		velocity = Vector2.ZERO
+		animationState.travel("Idle")
+		return
 	# get the input strength
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
