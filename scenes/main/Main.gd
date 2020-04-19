@@ -33,3 +33,6 @@ func _on_Player_got_score(new_score):
 func _on_Player_got_item(new_item):
 	ui_play.set_inventory_curr(player.inventory_list.size())
 	ui_play.set_inventory_max(player.inventory_size)
+
+func _on_Player_deposited_in_bin():
+	bin.play_deposit()
