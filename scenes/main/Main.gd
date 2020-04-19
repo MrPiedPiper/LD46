@@ -4,6 +4,7 @@ onready var ui_play = $UI/Play_UI
 onready var player = $YSort/Player
 onready var camera = $Camera2D
 onready var camera_tween = $Camera2D/Tween
+onready var bin = $YSort/Bin
 
 var score = 0
 

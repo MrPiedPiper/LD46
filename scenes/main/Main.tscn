@@ -630,11 +630,16 @@ position = Vector2( 296, 152 )
 [node name="Farmland16" parent="YSort/Farmland" instance=ExtResource( 3 )]
 position = Vector2( 296, 168 )
 
+[node name="Bin" parent="YSort" instance=ExtResource( 7 )]
+position = Vector2( 152, 48 )
+
 [node name="Camera2D" type="Camera2D" parent="."]
 pause_mode = 2
 position = Vector2( 160, 96 )
 current = true
 
 [node name="Tween" type="Tween" parent="Camera2D"]
+
+[connection signal="deposited_in_bin" from="YSort/Player" to="." method="_on_Player_deposited_in_bin"]
 [connection signal="got_item" from="YSort/Player" to="." method="_on_Player_got_item"]
 [connection signal="got_score" from="YSort/Player" to="." method="_on_Player_got_score"]
