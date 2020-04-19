@@ -39,7 +39,19 @@ func _on_Player_got_item(new_item):
 	ui_play.set_inventory_max(player.inventory_size)
 
 func _on_Player_deposited_in_bin():
+	#Play the animation
 	bin.play_deposit()
+	#Add up all the points 
+	var money_gained = 0
+	#Set the score variable
+	for i in player.inventory_list:
+		money_gained += i.item_value
+	#Set the points on the UI
+	score += money_gained
+	ui_play.set_score(score)
+	#Clear the player's inventory
+	player.inventory_list.clear()
+	ui_play.set_inventory_curr(0)
 
 func _on_Player_swung_tool(impact_pos):
 	var tile_coord = ground_tilemap.world_to_map(impact_pos)
@@ -48,4 +60,3 @@ func _on_Player_swung_tool(impact_pos):
 		var new_farmland = farmland.instance()
 		farmland_parent.add_child(new_farmland)
 		new_farmland.global_position = Vector2(stepify(impact_pos.x-8,16)+8,stepify(impact_pos.y-8,16)+8)
-	
