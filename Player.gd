@@ -20,8 +20,7 @@ onready var tool_parent = $Hand/ToolOffset
 
 # animation variables
 onready var animationPlayer = $AnimationPlayer
-onready var animationTree = $AnimationTree
-onready var animationState = animationTree.get("parameters/playback")
+var is_facing_right = true
 
 enum {
 	IDLE,
@@ -85,7 +84,6 @@ func _process(delta):
 				hoe.swing()
 
 func _ready():
-	animationTree.active = true
 	yield(get_tree(),"idle_frame")
 	inventory_list.append(hoe)
 	emit_signal("scrolled_inventory",hoe)
@@ -132,29 +130,31 @@ func update_held_item(new_array):
 				inventory_list = new_array
 				new_equipped.visible = true
 				emit_signal("scrolled_inventory",new_equipped)
-	
 
 func move_state(delta):
-	if is_swinging_hoe:
-		velocity = Vector2.ZERO
-		animationState.travel("Idle")
-		return
 	# get the input strength
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	input_vector = input_vector.normalized()
 	
+	if input_vector.x > 0:
+		is_facing_right = true
+	elif input_vector.x < 0:
+		is_facing_right = false 
+	
 	if input_vector != Vector2.ZERO:
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
-		# set the animationTree to play the Idle with the blend_position referring to the input_vector
-		animationTree.set("parameters/Idle/blend_position", input_vector)
-		animationTree.set("parameters/Run/blend_position", input_vector)
-		animationState.travel("Run")
-		
+		if is_facing_right:
+			animationPlayer.play("RunRight")
+		else:
+			animationPlayer.play("RunLeft")
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
-		animationState.travel("Idle")
+		if is_facing_right:
+			animationPlayer.play("IdleRight")
+		else:
+			animationPlayer.play("IdleLeft")
 	
 	velocity = move_and_slide(velocity)
 
