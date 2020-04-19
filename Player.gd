@@ -3,6 +3,7 @@ extends KinematicBody2D
 signal deposited_in_bin
 signal got_score
 signal got_item
+signal swung_tool
 
 var velocity = Vector2.ZERO
 
@@ -11,6 +12,9 @@ const ACCELERATION = 500
 const FRICTION = 500
 
 export var test_plant:PackedScene = load("res://scenes/crop/Crop.tscn")
+
+onready var hoe = $Hand/Offset/Hoe
+var is_swinging_hoe = false
 
 #Variable holds a list of all crop areas the player is touching
 var touching_list_crops = []
@@ -36,19 +40,8 @@ class inventory_item:
 var score = 0
 
 func _process(delta):
-	# get the input strength
-	var input_vector = Vector2.ZERO
-	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
-	input_vector = input_vector.normalized()
-	
-	if input_vector != Vector2.ZERO:
-		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
-		
-	else:
-		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
-	
-	velocity = move_and_slide(velocity)
+	if !is_swinging_hoe:
+		move(delta)
 	
 	if Input.is_action_just_pressed("action_interact"):
 		if is_touching_bin:
@@ -68,7 +61,25 @@ func _process(delta):
 		elif !touching_list_farmland.empty():
 			var closest_farmland = return_closest_touching(touching_list_farmland)
 			closest_farmland.plant_crop(test_plant)
+	if Input.is_action_just_pressed("action_hit"):
+		is_swinging_hoe = true
+		velocity = Vector2.ZERO
+		hoe.swing()
+
+func move(delta):
+	# get the input strength
+	var input_vector = Vector2.ZERO
+	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
+	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+	input_vector = input_vector.normalized()
 	
+	if input_vector != Vector2.ZERO:
+		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
+		
+	else:
+		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+	
+	velocity = move_and_slide(velocity)
 
 #Return the nearest node from an Array
 func return_closest_touching(list:Array):
@@ -118,3 +129,8 @@ func _on_Area2D_area_exited(area):
 	if area.owner == null or area.owner.is_in_group("farmland"):
 		#Remove it from the list
 		touching_list_farmland.erase(area)
+
+func _on_Hoe_swung(hoe_hit_position):
+	is_swinging_hoe = false
+	if !hoe.was_swing_on_farmland:
+		emit_signal("swung_tool",hoe_hit_position)

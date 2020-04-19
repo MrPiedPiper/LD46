@@ -5,6 +5,10 @@ onready var player = $YSort/Player
 onready var camera = $Camera2D
 onready var camera_tween = $Camera2D/Tween
 onready var bin = $YSort/Bin
+onready var ground_tilemap = $TileMap2
+onready var farmland_parent = $YSort/Farmland
+
+export var farmland:PackedScene
 
 var score = 0
 
@@ -36,3 +40,12 @@ func _on_Player_got_item(new_item):
 
 func _on_Player_deposited_in_bin():
 	bin.play_deposit()
+
+func _on_Player_swung_tool(impact_pos):
+	var tile_coord = ground_tilemap.world_to_map(impact_pos)
+	var tile = ground_tilemap.get_cellv(tile_coord)
+	if tile == 1:
+		var new_farmland = farmland.instance()
+		farmland_parent.add_child(new_farmland)
+		new_farmland.global_position = Vector2(stepify(impact_pos.x-8,16)+8,stepify(impact_pos.y-8,16)+8)
+	
