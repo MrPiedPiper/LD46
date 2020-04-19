@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+signal deposited_in_bin
 signal got_score
 signal got_item
 
@@ -15,6 +16,8 @@ export var test_plant:PackedScene = load("res://scenes/crop/Crop.tscn")
 var touching_list_crops = []
 #Variable holds a list of all farmland areas the player is touching
 var touching_list_farmland = []
+
+var is_touching_bin = false
 
 var inventory_size = 3
 #Variable holds all items in the player's inventory
@@ -48,6 +51,10 @@ func _process(delta):
 	velocity = move_and_slide(velocity)
 	
 	if Input.is_action_just_pressed("action_interact"):
+		if is_touching_bin:
+			#Get specific item to deposit?
+			emit_signal("deposited_in_bin")
+			
 		if !touching_list_crops.empty() and inventory_list.size() < inventory_size:
 			#Get the closest crop
 			var closest_crop = return_closest_touching(touching_list_crops)
@@ -86,6 +93,10 @@ func return_closest_touching(list:Array):
 
 #When an area is entered
 func _on_Area2D_area_entered(area):
+	#If the owner of the area touched is in the "bin" group
+	if area.owner.is_in_group("bin"):
+		#Set to true
+		is_touching_bin = true
 	#If the owner of the area touched is in the "crop" group
 	if area.owner.is_in_group("crop"):
 		#Add it to the list
@@ -97,6 +108,9 @@ func _on_Area2D_area_entered(area):
 		
 #When an area is exited
 func _on_Area2D_area_exited(area):
+	#If the owner of the area touched area's null or the owner is in the "bin" group
+	if area.owner.is_in_group("bin"):
+		is_touching_bin = false
 	#If the owner of the area touched area's owner is null (due to being deleted) or is in the "crop" group
 	if area.owner == null or area.owner.is_in_group("crop"):
 		#Remove it from the list
