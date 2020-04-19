@@ -7,6 +7,7 @@
 [ext_resource path="res://scenes/main/Main.gd" type="Script" id=5]
 [ext_resource path="res://scenes/World/grass_tilemap.png" type="Texture" id=6]
 [ext_resource path="res://scenes/World/cliff.png" type="Texture" id=7]
+[ext_resource path="res://scenes/bin.tscn" type="PackedScene" id=8]
 
 [sub_resource type="TileSet" id=1]
 0/name = "grass_tilemap.png 0"
@@ -630,7 +631,7 @@ position = Vector2( 296, 152 )
 [node name="Farmland16" parent="YSort/Farmland" instance=ExtResource( 3 )]
 position = Vector2( 296, 168 )
 
-[node name="Bin" parent="YSort" instance=ExtResource( 7 )]
+[node name="Bin" parent="YSort" instance=ExtResource( 8 )]
 position = Vector2( 152, 48 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
