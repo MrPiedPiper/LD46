@@ -13,6 +13,20 @@ const FRICTION = 500
 
 export var test_plant:PackedScene = load("res://scenes/crop/Crop.tscn")
 
+# animation variables
+onready var animationPlayer = $AnimationPlayer
+onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
+
+enum {
+	IDLE,
+	RUN
+}
+
+func _ready():
+	animationTree.active = true
+
+
 onready var hoe = $Hand/Offset/Hoe
 var is_swinging_hoe = false
 
@@ -41,7 +55,7 @@ var score = 0
 
 func _process(delta):
 	if !is_swinging_hoe:
-		move(delta)
+		move_state(delta)
 	
 	if Input.is_action_just_pressed("action_interact"):
 		if is_touching_bin and inventory_list.size() > 0:
@@ -66,7 +80,7 @@ func _process(delta):
 		velocity = Vector2.ZERO
 		hoe.swing()
 
-func move(delta):
+func move_state(delta):
 	# get the input strength
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -75,9 +89,14 @@ func move(delta):
 	
 	if input_vector != Vector2.ZERO:
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
+		# set the animationTree to play the Idle with the blend_position referring to the input_vector
+		animationTree.set("parameters/Idle/blend_position", input_vector)
+		animationTree.set("parameters/Run/blend_position", input_vector)
+		animationState.travel("Run")
 		
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+		animationState.travel("Idle")
 	
 	velocity = move_and_slide(velocity)
 
