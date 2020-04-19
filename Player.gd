@@ -18,6 +18,16 @@ onready var hoe = $Hand/ToolOffset/Hoe
 onready var item_parent = $Hand/ItemOffset
 onready var tool_parent = $Hand/ToolOffset
 
+# animation variables
+onready var animationPlayer = $AnimationPlayer
+onready var animationTree = $AnimationTree
+onready var animationState = animationTree.get("parameters/playback")
+
+enum {
+	IDLE,
+	RUN
+}
+
 var is_swinging_hoe = false
 
 #Variable holds a list of all crop areas the player is touching
@@ -46,7 +56,7 @@ var score = 0
 
 func _process(delta):
 	if !is_swinging_hoe:
-		move(delta)
+		move_state(delta)
 	
 	if Input.is_action_just_pressed("action_interact"):
 		if is_touching_bin and sellable_list.size() > 0:
@@ -78,6 +88,7 @@ func _process(delta):
 				hoe.swing()
 
 func _ready():
+	animationTree.active = true
 	yield(get_tree(),"idle_frame")
 	inventory_list.append(hoe)
 	emit_signal("scrolled_inventory",hoe)
@@ -119,7 +130,7 @@ func _input(event):
 					new_equipped.visible = true
 					emit_signal("scrolled_inventory",new_equipped)
 
-func move(delta):
+func move_state(delta):
 	# get the input strength
 	var input_vector = Vector2.ZERO
 	input_vector.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
@@ -128,9 +139,14 @@ func move(delta):
 	
 	if input_vector != Vector2.ZERO:
 		velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
+		# set the animationTree to play the Idle with the blend_position referring to the input_vector
+		animationTree.set("parameters/Idle/blend_position", input_vector)
+		animationTree.set("parameters/Run/blend_position", input_vector)
+		animationState.travel("Run")
 		
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+		animationState.travel("Idle")
 	
 	velocity = move_and_slide(velocity)
 
