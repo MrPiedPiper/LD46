@@ -63,18 +63,18 @@ custom_constants/separation = 0
 margin_right = 156.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-custom_constants/separation = 2
+custom_constants/separation = 0
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/MarginContainer/HBoxContainer/HBoxContainer"]
 margin_top = 3.0
-margin_right = 46.0
+margin_right = 12.0
 margin_bottom = 13.0
 size_flags_vertical = 4
 texture = ExtResource( 5 )
 
 [node name="ScoreCountHBoxContainer" type="HBoxContainer" parent="MarginContainer/MarginContainer/HBoxContainer/HBoxContainer"]
-margin_left = 48.0
-margin_right = 54.0
+margin_left = 12.0
+margin_right = 18.0
 margin_bottom = 16.0
 custom_constants/separation = 2
 
