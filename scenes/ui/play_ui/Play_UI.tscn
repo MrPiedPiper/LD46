@@ -15,6 +15,8 @@ region = Rect2( 0, 0, 6, 10 )
 [node name="Play_UI" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -0.55481
+margin_right = -0.55481
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource( 2 )
@@ -25,15 +27,36 @@ number_texture = ExtResource( 7 )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer"]
 anchor_right = 1.0
 margin_bottom = 20.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/MarginContainer"]
-margin_right = 320.0
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer3"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 316.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer"]
+margin_right = 101.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer"]
+margin_right = 101.0
 margin_bottom = 20.0
 texture = ExtResource( 1 )
 region_rect = Rect2( 0, 0, 12, 12 )
@@ -47,98 +70,132 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer"]
-margin_right = 320.0
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer"]
+margin_right = 101.0
 margin_bottom = 20.0
 custom_constants/margin_right = 4
 custom_constants/margin_top = 2
 custom_constants/margin_left = 4
 custom_constants/margin_bottom = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MarginContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer/MarginContainer"]
 margin_left = 4.0
 margin_top = 2.0
-margin_right = 316.0
+margin_right = 97.0
 margin_bottom = 18.0
-custom_constants/separation = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer"]
-margin_right = 156.0
-margin_bottom = 16.0
 size_flags_horizontal = 3
 custom_constants/separation = 0
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer2"]
 margin_top = 3.0
 margin_right = 12.0
 margin_bottom = 13.0
 size_flags_vertical = 4
 texture = ExtResource( 5 )
 
-[node name="ScoreCountHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer"]
+[node name="ScoreCountHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer2"]
 margin_left = 12.0
 margin_right = 18.0
 margin_bottom = 16.0
 custom_constants/separation = 2
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer/ScoreCountHBoxContainer"]
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer2/ScoreCountHBoxContainer"]
 margin_top = 3.0
 margin_right = 6.0
 margin_bottom = 13.0
 size_flags_vertical = 4
 texture = SubResource( 1 )
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer"]
-margin_left = 156.0
+[node name="Control" type="Control" parent="CanvasLayer/MarginContainer3/HBoxContainer"]
+margin_left = 105.0
+margin_right = 206.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer"]
+margin_left = 210.0
 margin_right = 312.0
-margin_bottom = 16.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2"]
+margin_right = 102.0
+margin_bottom = 20.0
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 12, 12 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2"]
+margin_right = 102.0
+margin_bottom = 20.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 2
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 98.0
+margin_bottom = 18.0
 size_flags_horizontal = 3
 custom_constants/separation = 3
 alignment = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2"]
-margin_left = 108.0
-margin_right = 124.0
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2"]
+margin_left = 46.0
+margin_right = 62.0
 margin_bottom = 16.0
 size_flags_vertical = 4
 texture = ExtResource( 3 )
 
-[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2"]
-margin_left = 127.0
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2"]
+margin_left = 65.0
 margin_top = 3.0
-margin_right = 129.0
+margin_right = 67.0
 margin_bottom = 13.0
 size_flags_vertical = 4
 texture = ExtResource( 6 )
 
-[node name="InventoryCountHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2"]
-margin_left = 132.0
-margin_right = 138.0
+[node name="InventoryCountHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2"]
+margin_left = 70.0
+margin_right = 76.0
 margin_bottom = 16.0
 custom_constants/separation = 2
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2/InventoryCountHBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventoryCountHBoxContainer"]
 margin_top = 3.0
 margin_right = 6.0
 margin_bottom = 13.0
 size_flags_vertical = 4
 texture = SubResource( 1 )
 
-[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2"]
-margin_left = 141.0
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2"]
+margin_left = 79.0
 margin_top = 3.0
-margin_right = 147.0
+margin_right = 85.0
 margin_bottom = 13.0
 size_flags_vertical = 4
 texture = ExtResource( 4 )
 
-[node name="InventorySizeHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2"]
-margin_left = 150.0
-margin_right = 156.0
+[node name="InventorySizeHBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2"]
+margin_left = 88.0
+margin_right = 94.0
 margin_bottom = 16.0
 custom_constants/separation = 2
 
-[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2/InventorySizeHBoxContainer"]
+[node name="TextureRect3" type="TextureRect" parent="CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventorySizeHBoxContainer"]
 margin_top = 3.0
 margin_right = 6.0
 margin_bottom = 13.0

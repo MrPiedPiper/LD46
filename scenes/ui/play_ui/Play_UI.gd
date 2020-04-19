@@ -1,8 +1,8 @@
 extends Control
 
-onready var inventory_count_parent = $CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2/InventoryCountHBoxContainer
-onready var inventory_size_parent = $CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer2/InventorySizeHBoxContainer
-onready var score_count_parent = $CanvasLayer/MarginContainer/MarginContainer/HBoxContainer/HBoxContainer/ScoreCountHBoxContainer
+onready var inventory_count_parent = $CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventoryCountHBoxContainer
+onready var inventory_size_parent = $CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventorySizeHBoxContainer
+onready var score_count_parent = $CanvasLayer/MarginContainer3/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer2
 
 export var number_texture:Texture
 
