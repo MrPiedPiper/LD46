@@ -38,20 +38,17 @@ func _on_Player_got_item(new_item):
 	ui_play.set_inventory_curr(player.sellable_list.size())
 	ui_play.set_inventory_max(player.sellable_size)
 
-func _on_Player_deposited_in_bin():
+func _on_Player_deposited_in_bin(item):
 	#Play the animation
 	bin.play_deposit()
 	#Add up all the points 
 	var money_gained = 0
 	#Set the score variable
-	for i in player.sellable_list:
-		money_gained += i.item_value
+	money_gained += item.item_value
 	#Set the points on the UI
 	score += money_gained
 	ui_play.set_score(score)
-	#Clear the player's inventory
-	player.on_deposited()
-	ui_play.set_inventory_curr(0)
+	ui_play.set_inventory_curr(player.sellable_list.size())
 
 func _on_Player_swung_tool(impact_pos):
 	var tile_coord = ground_tilemap.world_to_map(impact_pos)

@@ -57,9 +57,13 @@ func _process(delta):
 	move_state(delta)
 	
 	if Input.is_action_just_pressed("action_interact"):
-		if is_touching_bin and sellable_list.size() > 0:
-			#Get specific item to deposit?
-			emit_signal("deposited_in_bin")
+		if is_touching_bin and sellable_list.size() > 0 and inventory_list[0] is sellable_item:
+			var item = inventory_list[0]
+			inventory_list.erase(item)
+			sellable_list.erase(item)
+			update_held_item(inventory_list)
+			emit_signal("deposited_in_bin",item)
+			emit_signal("scrolled_inventory",inventory_list[0])
 			
 		if !touching_list_crops.empty() and sellable_list.size() < sellable_size:
 			#Get the closest crop
@@ -138,6 +142,8 @@ func move_state(delta):
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	input_vector = input_vector.normalized()
 	
+	if is_swinging_hoe: input_vector = Vector2.ZERO
+	
 	if input_vector.x > 0:
 		is_facing_right = true
 	elif input_vector.x < 0:
@@ -156,7 +162,8 @@ func move_state(delta):
 		else:
 			animationPlayer.play("IdleLeft")
 	
-	velocity = move_and_slide(velocity)
+	if !is_swinging_hoe:
+		velocity = move_and_slide(velocity)
 
 #Return the nearest node from an Array
 func return_closest_touching(list:Array):
@@ -211,9 +218,3 @@ func _on_Hoe_swung(hoe_hit_position):
 	is_swinging_hoe = false
 	if !hoe.was_swing_on_farmland:
 		emit_signal("swung_tool",hoe_hit_position)
-
-func on_deposited():
-	for i in sellable_list:
-		inventory_list.erase(i)
-	sellable_list.clear()
-	emit_signal("scrolled_inventory",inventory_list[0])
