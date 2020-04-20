@@ -11,6 +11,8 @@ onready var farmland_parent = $YSort/Farmland
 export var farmland:PackedScene
 
 var score = 0
+var unlocked_gates_count = 0
+var gate_prices = [100,200,400,700,1000,1500,2000]
 
 var camera_dimensions = Vector2(160,96)
 onready var camera_official_position = camera.position
@@ -60,3 +62,21 @@ func _on_Player_swung_tool(impact_pos):
 
 func _on_Player_scrolled_inventory(item):
 	ui_play.set_equipped(item.item_icon)
+
+func _on_Player_unlocked_gate():
+	unlocked_gates_count += 1
+	ui_play.display_gate_message(unlocked_gates_count)
+
+func _on_Player_is_touching_fence(is_touching_fence):
+	if is_touching_fence:
+		ui_play.display_gate_message(unlocked_gates_count)
+		ui_play.show_message()
+	else:
+		ui_play.hide_message()
+
+func _on_Player_interact_gate(gate):
+	if score >= gate_prices[unlocked_gates_count]:
+		score -= gate_prices[unlocked_gates_count]
+		ui_play.set_score(score)
+		unlocked_gates_count += 1
+		gate.open_gate()

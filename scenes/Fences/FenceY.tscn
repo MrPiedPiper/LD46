@@ -10,10 +10,11 @@ extents = Vector2( 11.5, 17 )
 extents = Vector2( 9, 17 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 32, 24 )
+extents = Vector2( 32, 32 )
 
 [node name="FenceY" type="Node2D" groups=[
 "fence",
+"message",
 ]]
 script = ExtResource( 2 )
 

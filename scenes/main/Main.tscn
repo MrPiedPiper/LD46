@@ -573,6 +573,9 @@ points = PoolVector2Array( 0, 0, 16, 0, 16, 16, 0, 16 )
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_lock_": true
+}
 farmland = ExtResource( 3 )
 
 [node name="TileMap2" type="TileMap" parent="."]
@@ -633,5 +636,7 @@ current = true
 [connection signal="deposited_in_bin" from="YSort/Player" to="." method="_on_Player_deposited_in_bin"]
 [connection signal="got_item" from="YSort/Player" to="." method="_on_Player_got_item"]
 [connection signal="got_score" from="YSort/Player" to="." method="_on_Player_got_score"]
+[connection signal="interact_gate" from="YSort/Player" to="." method="_on_Player_interact_gate"]
+[connection signal="is_touching_fence" from="YSort/Player" to="." method="_on_Player_is_touching_fence"]
 [connection signal="scrolled_inventory" from="YSort/Player" to="." method="_on_Player_scrolled_inventory"]
 [connection signal="swung_tool" from="YSort/Player" to="." method="_on_Player_swung_tool"]
