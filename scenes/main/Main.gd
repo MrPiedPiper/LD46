@@ -26,7 +26,6 @@ func _process(delta):
 		get_tree().paused = true
 		yield(camera_tween, "tween_completed")
 		get_tree().paused = false
-		
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -61,7 +60,10 @@ func _on_Player_swung_tool(impact_pos):
 		new_farmland.global_position = Vector2(stepify(impact_pos.x-8,16)+8,stepify(impact_pos.y-8,16)+8)
 
 func _on_Player_scrolled_inventory(item):
-	ui_play.set_equipped(item.item_icon)
+	if item == null:
+		ui_play.set_equipped(null)
+	else:
+		ui_play.set_equipped(item.item_icon)
 
 func _on_Player_unlocked_gate():
 	unlocked_gates_count += 1
@@ -80,3 +82,31 @@ func _on_Player_interact_gate(gate):
 		ui_play.set_score(score)
 		unlocked_gates_count += 1
 		gate.open_gate()
+
+func _on_Player_is_touching_vending(is_touching,vending):
+	if is_touching:
+		ui_play.display_message(vending.ui_price)
+		ui_play.show_message()
+	else:
+		ui_play.hide_message()
+
+func _on_Player_interact_vending(vending):
+	if score >= vending.price:
+		score -= vending.price
+		ui_play.set_score(score)
+		vending.activate()
+		match vending.drop_type:
+			vending.TYPE.NONE:
+				pass
+			vending.TYPE.SPEED_FERT:
+				player.equip_speed_fert()
+			vending.TYPE.QUALITY_FERT:
+				player.equip_quality_fert()
+			vending.TYPE.HOE:
+				player.equip_hoe()
+
+func _on_Player_swung_speed_fertilizer(touched_farmland):
+	touched_farmland.upgrade_speed()
+
+func _on_Player_swung_quality_fertilizer(touched_farmland):
+	touched_farmland.upgrade_quality()
