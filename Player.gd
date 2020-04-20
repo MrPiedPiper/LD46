@@ -33,6 +33,8 @@ var is_swinging_hoe = false
 var touching_list_crops = []
 #Variable holds a list of all farmland areas the player is touching
 var touching_list_farmland = []
+#Variable holds a list of all fence areas the player is touching
+var touching_list_fences = []
 
 var is_touching_bin = false
 
@@ -64,6 +66,9 @@ func _process(delta):
 			update_held_item(inventory_list)
 			emit_signal("deposited_in_bin",item)
 			emit_signal("scrolled_inventory",inventory_list[0])
+		if !touching_list_fences.empty():
+			var closest_fence = return_closest_touching(touching_list_fences)
+			closest_fence.open_gate()
 			
 		if !touching_list_crops.empty() and sellable_list.size() < sellable_size:
 			#Get the closest crop
@@ -192,6 +197,10 @@ func _on_Area2D_area_entered(area):
 	if area.owner.is_in_group("bin"):
 		#Set to true
 		is_touching_bin = true
+	#If the owner of the area touched is in the "fence" group
+	if area.owner.is_in_group("fence"):
+		#Add it to the list
+		touching_list_fences.append(area)
 	#If the owner of the area touched is in the "crop" group
 	if area.owner.is_in_group("crop"):
 		#Add it to the list
@@ -206,6 +215,10 @@ func _on_Area2D_area_exited(area):
 	#If the owner of the area touched area's null or the owner is in the "bin" group
 	if area.owner != null and area.owner.is_in_group("bin"):
 		is_touching_bin = false
+	#If the owner of the area touched area's owner is null (due to being deleted) or is in the "bin" group
+	if area.owner == null or area.owner.is_in_group("fence"):
+		#Remove it from the list
+		touching_list_crops.erase(area)
 	#If the owner of the area touched area's owner is null (due to being deleted) or is in the "crop" group
 	if area.owner == null or area.owner.is_in_group("crop"):
 		#Remove it from the list
