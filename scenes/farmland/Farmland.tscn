@@ -1,22 +1,40 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/farmland/Farmland.gd" type="Script" id=1]
 [ext_resource path="res://scenes/farmland/farmland.png" type="Texture" id=2]
+[ext_resource path="res://scenes/farmland/speed_upgrade.png" type="Texture" id=3]
+[ext_resource path="res://scenes/farmland/quality_upgrade.png" type="Texture" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 8 )
 
-[node name="Farmland" type="Node2D" groups=[
+[node name="Farmland" type="YSort" groups=[
 "farmland",
 ]]
 script = ExtResource( 1 )
+speed_texture = ExtResource( 3 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
 
+[node name="SpeedSprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -8 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 4 )
+offset = Vector2( 0, 8 )
+
+[node name="QualitySprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -8 )
+texture = ExtResource( 4 )
+offset = Vector2( 0, 8 )
+
 [node name="Crop" type="Node2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 0, 1 )
 texture = ExtResource( 2 )
+offset = Vector2( 0, -1 )

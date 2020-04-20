@@ -7,6 +7,10 @@ signal swung_tool
 signal scrolled_inventory
 signal interact_gate
 signal is_touching_fence
+signal interact_vending
+signal is_touching_vending
+signal swung_speed_fertilizer
+signal swung_quality_fertilizer
 
 var velocity = Vector2.ZERO
 
@@ -17,6 +21,8 @@ const FRICTION = 500
 export var test_plant:PackedScene = load("res://scenes/crop/Crop.tscn")
 
 onready var hoe = $Hand/ToolOffset/Hoe
+onready var fertilizer = $Hand/ToolOffset/Fertilizer
+onready var fert2 = $Hand/ToolOffset/Fertilizer2
 onready var item_parent = $Hand/ItemOffset
 onready var tool_parent = $Hand/ToolOffset
 
@@ -37,6 +43,8 @@ var touching_list_crops = []
 var touching_list_farmland = []
 #Variable holds a list of all fence areas the player is touching
 var touching_list_fences = []
+#Variable holds a list of all vending machine areas the player is touching
+var touching_list_vending = []
 
 var is_touching_bin = false
 
@@ -67,10 +75,16 @@ func _process(delta):
 			sellable_list.erase(item)
 			update_held_item(inventory_list)
 			emit_signal("deposited_in_bin",item)
-			emit_signal("scrolled_inventory",inventory_list[0])
+			var new_item
+			if !inventory_list.empty():
+				new_item = inventory_list[0]
+			emit_signal("scrolled_inventory",new_item)
 		if !touching_list_fences.empty():
 			var closest_fence = return_closest_touching(touching_list_fences)
 			emit_signal("interact_gate",closest_fence)
+		if !touching_list_vending.empty():
+			var closest_vending = return_closest_touching(touching_list_vending)
+			emit_signal("interact_vending",closest_vending)
 			
 		if !touching_list_crops.empty() and sellable_list.size() < sellable_size:
 			#Get the closest crop
@@ -82,44 +96,64 @@ func _process(delta):
 			#score += received_points
 			#emit_signal("got_score",score)
 			inventory_list.append(new_item)
+			print(inventory_list.size())
+			if inventory_list.size()==1:
+				update_held_item(inventory_list)
 			emit_signal("got_item",new_item)
 		elif !touching_list_farmland.empty():
 			var closest_farmland = return_closest_touching(touching_list_farmland)
 			closest_farmland.plant_crop(test_plant)
 	if Input.is_action_just_pressed("action_hit"):
-		var curr_tool = inventory_list[0]
+		var curr_tool
+		if !inventory_list.empty():
+			curr_tool = inventory_list[0]
 		if curr_tool != null and curr_tool.get("is_tool") != null and curr_tool.get("is_tool"):
 			if curr_tool == hoe:
 				is_swinging_hoe = true
 				velocity = Vector2.ZERO
 				hoe.swing()
+			elif curr_tool == fertilizer:
+				is_swinging_hoe = true
+				velocity = Vector2.ZERO
+				curr_tool.swing()
+			elif curr_tool == fert2:
+				is_swinging_hoe = true
+				velocity = Vector2.ZERO
+				curr_tool.swing()
 
 func _ready():
 	yield(get_tree(),"idle_frame")
-	inventory_list.append(hoe)
-	emit_signal("scrolled_inventory",hoe)
+	#inventory_list.append(fert2)
+	#inventory_list.append(fertilizer)
+#	inventory_list.append(hoe)
+#	update_held_item(inventory_list)
+#	emit_signal("scrolled_inventory",hoe)
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:
 		var curr_equipped = null
+		if !inventory_list.empty():
+			curr_equipped = inventory_list[0]
 		var new_equipped = null
 		var new_array = inventory_list.duplicate(true)
 		if event.button_index == BUTTON_WHEEL_DOWN:
-			curr_equipped = inventory_list[0]
 			var temp = new_array.pop_front()
 			new_array.push_back(temp)
 			new_equipped = new_array[0]
+			update_held_item(new_array)
 		elif event.button_index == BUTTON_WHEEL_UP:
-			curr_equipped = inventory_list[0]
 			var temp = new_array.pop_back()
 			new_array.push_front(temp)
 			new_equipped = new_array[0]
-		if curr_equipped != null:
 			update_held_item(new_array)
 
 func update_held_item(new_array):
-	var curr_equipped = inventory_list[0]
-	var new_equipped = new_array[0]
+	var curr_equipped
+	if !inventory_list.empty():
+		curr_equipped = inventory_list[0]
+	var new_equipped
+	if new_array != null and !new_array.empty():
+		new_equipped = new_array[0]
 	if curr_equipped != null: 
 		var is_tool = curr_equipped.get("is_tool")
 		if is_tool == null or (is_tool != null and !is_tool) or (is_tool != null and is_tool and !curr_equipped.get("is_busy")):
@@ -127,7 +161,7 @@ func update_held_item(new_array):
 				for i in tool_parent.get_children():
 					i.visible = false
 				for i in item_parent.get_children():
-					item_parent.remove_child(i)
+					i.queue_free()
 				var new_item = Sprite.new()
 				new_item.texture = new_equipped.item_icon
 				item_parent.add_child(new_item)
@@ -137,10 +171,29 @@ func update_held_item(new_array):
 				for i in tool_parent.get_children():
 					i.visible = false
 				for i in item_parent.get_children():
-					item_parent.remove_child(i)
+					i.queue_free()
 				inventory_list = new_array
 				new_equipped.visible = true
 				emit_signal("scrolled_inventory",new_equipped)
+		else:
+			for i in tool_parent.get_children():
+				i.visible = false
+			for i in item_parent.get_children():
+				i.queue_free()
+			emit_signal("scrolled_inventory",null)
+	elif new_equipped != null:
+		for i in tool_parent.get_children():
+			i.visible = false
+		for i in item_parent.get_children():
+			i.queue_free()
+		new_equipped.visible = true
+		emit_signal("scrolled_inventory",new_equipped)
+	else:
+		for i in tool_parent.get_children():
+			i.visible = false
+		for i in item_parent.get_children():
+			i.queue_free()
+		emit_signal("scrolled_inventory",null)
 
 func move_state(delta):
 	# get the input strength
@@ -204,6 +257,11 @@ func _on_Area2D_area_entered(area):
 		#Add it to the list
 		touching_list_fences.append(area)
 		emit_signal("is_touching_fence",true)
+	#If the owner of the area touched is in the "vending" group
+	if area.owner.is_in_group("vending"):
+		#Add it to the list
+		touching_list_vending.append(area)
+		emit_signal("is_touching_vending",true,area.owner)
 	#If the owner of the area touched is in the "crop" group
 	if area.owner.is_in_group("crop"):
 		#Add it to the list
@@ -223,6 +281,11 @@ func _on_Area2D_area_exited(area):
 		#Remove it from the list
 		touching_list_fences.erase(area)
 		emit_signal("is_touching_fence",false)
+	#If the owner of the area touched area's owner is null (due to being deleted) or is in the "vending" group
+	if area.owner == null or area.owner.is_in_group("vending"):
+		#Remove it from the list
+		touching_list_vending.erase(area)
+		emit_signal("is_touching_vending",false,area)
 	#If the owner of the area touched area's owner is null (due to being deleted) or is in the "crop" group
 	if area.owner == null or area.owner.is_in_group("crop"):
 		#Remove it from the list
@@ -235,3 +298,23 @@ func _on_Hoe_swung(hoe_hit_position):
 	is_swinging_hoe = false
 	if !hoe.was_swing_on_farmland:
 		emit_signal("swung_tool",hoe_hit_position)
+
+func _on_Fertilizer_swung(curr,touched_farmland):
+	is_swinging_hoe = false
+	if curr.was_swing_on_farmland:
+		if curr.fert_type == curr.TYPE.SPEED:
+			emit_signal("swung_speed_fertilizer",touched_farmland)
+		elif curr.fert_type == curr.TYPE.QUALITY:
+			emit_signal("swung_quality_fertilizer",touched_farmland)
+
+func equip_speed_fert():
+	inventory_list.push_front(fert2)
+	update_held_item(inventory_list)
+	
+func equip_quality_fert():
+	inventory_list.push_front(fertilizer)
+	update_held_item(inventory_list)
+
+func equip_hoe():
+	inventory_list.push_front(hoe)
+	update_held_item(inventory_list)
