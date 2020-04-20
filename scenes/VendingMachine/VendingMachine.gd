@@ -3,17 +3,19 @@ extends Node2D
 export var speed_sprite:Texture
 export var quality_sprite:Texture
 export var hoe_sprite:Texture
+export var inventory_sprite:Texture
 export var fert:PackedScene
 export var hoe:PackedScene
 export var ui_price:Texture
 export var price:int = 500
-export(int,"None","Speed Fert","Quality Fert","Hoe") var drop_type
+export(int,"None","Speed Fert","Quality Fert","Hoe","Inventory") var drop_type
 
 enum TYPE{
 	NONE,
 	SPEED_FERT,
 	QUALITY_FERT,
-	HOE
+	HOE,
+	INVENTORY
 }
 
 onready var vending_sprite = $Sprite
@@ -30,6 +32,8 @@ func _ready():
 			vending_sprite.texture = quality_sprite
 		TYPE.HOE:
 			vending_sprite.texture = hoe_sprite
+		TYPE.INVENTORY:
+			vending_sprite.texture = inventory_sprite
 
 func activate():
 	vending_animation.play("used")

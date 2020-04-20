@@ -2,12 +2,16 @@ extends Control
 
 onready var inventory_count_parent = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventoryCountHBoxContainer
 onready var inventory_size_parent = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/InventorySizeHBoxContainer
+onready var inventory_texture_rect = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer/MarginContainer2/MarginContainer2/HBoxContainer2/TextureRect
 onready var score_count_parent = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer/MarginContainer/MarginContainer/HBoxContainer2/ScoreCountHBoxContainer
 onready var equipped_texture_rect = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer2/MarginContainer2/MarginContainer2/InventoryHBoxContainer/CenterContainer/EquippedScaleParent/EquippedTextureRect
 onready var animation_player = $AnimationPlayer
 onready var message_box = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer2/MarginContainer/Control/MarginContainer/TextureRect
 onready var message_box_hider = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer2/MarginContainer/Control
 
+export var inventory_default_icon:Texture
+export var inventory_upgrage_icon:Texture
+export var inventory_upgrage2_icon:Texture
 export var number_texture:Texture
 export(Array,Texture) var gate_price_array
 
@@ -59,3 +63,9 @@ func hide_message():
 
 func show_message():
 	message_box_hider.visible = true
+
+func upgrade_inventory():
+	if inventory_texture_rect.texture == inventory_default_icon:
+		inventory_texture_rect.texture = inventory_upgrage_icon
+	elif inventory_texture_rect.texture == inventory_upgrage_icon:
+		inventory_texture_rect.texture = inventory_upgrage2_icon
