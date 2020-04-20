@@ -104,6 +104,15 @@ func _on_Player_interact_vending(vending):
 				player.equip_quality_fert()
 			vending.TYPE.HOE:
 				player.equip_hoe()
+			vending.TYPE.INVENTORY:
+				if player.sellable_size == 3:
+					player.sellable_size = 20
+					ui_play.set_inventory_max(20)
+					ui_play.upgrade_inventory()
+				elif player.sellable_size == 20:
+					player.sellable_size = 100
+					ui_play.set_inventory_max(100)
+					ui_play.upgrade_inventory()
 
 func _on_Player_swung_speed_fertilizer(touched_farmland):
 	touched_farmland.upgrade_speed()

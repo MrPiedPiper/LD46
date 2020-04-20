@@ -308,11 +308,11 @@ func _on_Fertilizer_swung(curr,touched_farmland):
 			emit_signal("swung_quality_fertilizer",touched_farmland)
 
 func equip_speed_fert():
-	inventory_list.push_front(fert2)
+	inventory_list.push_front(fertilizer)
 	update_held_item(inventory_list)
 	
 func equip_quality_fert():
-	inventory_list.push_front(fertilizer)
+	inventory_list.push_front(fert2)
 	update_held_item(inventory_list)
 
 func equip_hoe():
