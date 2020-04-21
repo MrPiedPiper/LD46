@@ -3,6 +3,7 @@ extends Node2D
 onready var collider = $Area2D/CollisionShape2D
 onready var sprite_speed = $SpeedSprite
 onready var sprite_quality = $QualitySprite
+onready var audio = $AudioStreamPlayer2D
 
 export var speed_texture:Texture
 export var quality_texture:Texture
@@ -12,6 +13,7 @@ var is_quality_upgraded = false
 
 func _process(delta):
 	if $Crop.get_child_count() == 0:
+		audio.play(0)
 		collider.disabled = false
 	else:
 		collider.disabled = true
