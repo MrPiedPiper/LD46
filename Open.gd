@@ -1,6 +1,6 @@
 extends Node2D
 
-
+export var main:PackedScene
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -14,3 +14,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_Menu_pressed_play():
+	$UI/Menu.visible = false
+	var new_scene = main.instance()
+	$Curr.add_child(new_scene)

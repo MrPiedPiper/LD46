@@ -13,7 +13,6 @@ var is_quality_upgraded = false
 
 func _process(delta):
 	if $Crop.get_child_count() == 0:
-		audio.play(0)
 		collider.disabled = false
 	else:
 		collider.disabled = true
