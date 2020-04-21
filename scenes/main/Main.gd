@@ -30,6 +30,9 @@ func _process(delta):
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	ui_play.set_inventory_max(player.sellable_size)
+	
+func _draw():
+	draw_circle(Vector2(100,100),32,Color.black)
 
 func _on_Player_got_score(new_score):
 	score = new_score
@@ -69,19 +72,28 @@ func _on_Player_unlocked_gate():
 	unlocked_gates_count += 1
 	ui_play.display_gate_message(unlocked_gates_count)
 
-func _on_Player_is_touching_fence(is_touching_fence):
+func _on_Player_is_touching_fence(is_touching_fence,fence):
 	if is_touching_fence:
-		ui_play.display_gate_message(unlocked_gates_count)
+		if !fence.is_auto_priced:
+			ui_play.display_message(fence.custom_cost_sprite)
+		else:
+			ui_play.display_gate_message(unlocked_gates_count)
 		ui_play.show_message()
 	else:
 		ui_play.hide_message()
 
 func _on_Player_interact_gate(gate):
-	if score >= gate_prices[unlocked_gates_count]:
-		score -= gate_prices[unlocked_gates_count]
-		ui_play.set_score(score)
-		unlocked_gates_count += 1
-		gate.open_gate()
+	if gate.is_auto_priced:
+		if score >= gate_prices[unlocked_gates_count]:
+			score -= gate_prices[unlocked_gates_count]
+			ui_play.set_score(score)
+			unlocked_gates_count += 1
+			gate.open_gate()
+	else:
+		if score >= gate.open_cost:
+			score -= gate.open_cost
+			ui_play.set_score(score)
+			gate.open_gate()
 
 func _on_Player_is_touching_vending(is_touching,vending):
 	if is_touching:
@@ -113,6 +125,8 @@ func _on_Player_interact_vending(vending):
 					player.sellable_size = 100
 					ui_play.set_inventory_max(100)
 					ui_play.upgrade_inventory()
+			vending.TYPE.BUTTON:
+				player.equip_button()
 
 func _on_Player_swung_speed_fertilizer(touched_farmland):
 	touched_farmland.upgrade_speed()

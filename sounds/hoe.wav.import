@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/hoe.wav-3bddcbb4cb91ed0704bee94dc66fcaa8.sample"
+
+[deps]
+
+source_file="res://sounds/hoe.wav"
+dest_files=[ "res://.import/hoe.wav-3bddcbb4cb91ed0704bee94dc66fcaa8.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

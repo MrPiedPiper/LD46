@@ -23,6 +23,8 @@ export var test_plant:PackedScene = load("res://scenes/crop/Crop.tscn")
 onready var hoe = $Hand/ToolOffset/Hoe
 onready var fertilizer = $Hand/ToolOffset/Fertilizer
 onready var fert2 = $Hand/ToolOffset/Fertilizer2
+onready var super_button = $Hand/ToolOffset/SuperButton
+
 onready var item_parent = $Hand/ItemOffset
 onready var tool_parent = $Hand/ToolOffset
 
@@ -70,11 +72,11 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("action_interact"):
 		if is_touching_bin and sellable_list.size() > 0 and inventory_list[0] is sellable_item:
-			var item = inventory_list[0]
-			inventory_list.erase(item)
-			sellable_list.erase(item)
+			for i in sellable_list:
+				inventory_list.erase(i)
+				emit_signal("deposited_in_bin",i)
+			sellable_list.clear()
 			update_held_item(inventory_list)
-			emit_signal("deposited_in_bin",item)
 			var new_item
 			if !inventory_list.empty():
 				new_item = inventory_list[0]
@@ -96,7 +98,6 @@ func _process(delta):
 			#score += received_points
 			#emit_signal("got_score",score)
 			inventory_list.append(new_item)
-			print(inventory_list.size())
 			if inventory_list.size()==1:
 				update_held_item(inventory_list)
 			emit_signal("got_item",new_item)
@@ -120,12 +121,15 @@ func _process(delta):
 				is_swinging_hoe = true
 				velocity = Vector2.ZERO
 				curr_tool.swing()
+			elif curr_tool == super_button:
+				curr_tool.swing()
 
 func _ready():
 	yield(get_tree(),"idle_frame")
 	#inventory_list.append(fert2)
 	#inventory_list.append(fertilizer)
-#	inventory_list.append(hoe)
+	#inventory_list.append(hoe)
+#	inventory_list.push_front(super_button)
 #	update_held_item(inventory_list)
 #	emit_signal("scrolled_inventory",hoe)
 
@@ -256,7 +260,7 @@ func _on_Area2D_area_entered(area):
 	if area.owner.is_in_group("fence"):
 		#Add it to the list
 		touching_list_fences.append(area)
-		emit_signal("is_touching_fence",true)
+		emit_signal("is_touching_fence",true,area.owner)
 	#If the owner of the area touched is in the "vending" group
 	if area.owner.is_in_group("vending"):
 		#Add it to the list
@@ -280,7 +284,7 @@ func _on_Area2D_area_exited(area):
 	if area.owner == null or area.owner.is_in_group("fence"):
 		#Remove it from the list
 		touching_list_fences.erase(area)
-		emit_signal("is_touching_fence",false)
+		emit_signal("is_touching_fence",false,area.owner)
 	#If the owner of the area touched area's owner is null (due to being deleted) or is in the "vending" group
 	if area.owner == null or area.owner.is_in_group("vending"):
 		#Remove it from the list
@@ -307,6 +311,9 @@ func _on_Fertilizer_swung(curr,touched_farmland):
 		elif curr.fert_type == curr.TYPE.QUALITY:
 			emit_signal("swung_quality_fertilizer",touched_farmland)
 
+func _on_SuperButton_swung():
+	pass
+	
 func equip_speed_fert():
 	inventory_list.push_front(fertilizer)
 	update_held_item(inventory_list)
@@ -318,3 +325,16 @@ func equip_quality_fert():
 func equip_hoe():
 	inventory_list.push_front(hoe)
 	update_held_item(inventory_list)
+
+func equip_button():
+	inventory_list.push_front(super_button)
+	update_held_item(inventory_list)
+
+func _on_SuperButton_touched_crop(crop):
+	if sellable_list.size() < sellable_size:
+		var received_points = crop.harvest()
+		var new_item = sellable_item.new("Test crop",crop.plant_icon,crop.plant_value)
+		sellable_list.append(new_item)
+		inventory_list.append(new_item)
+		emit_signal("got_item",new_item)
+		
