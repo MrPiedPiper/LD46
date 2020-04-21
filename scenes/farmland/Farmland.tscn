@@ -22,10 +22,10 @@ shape = SubResource( 1 )
 
 [node name="SpeedSprite" type="Sprite" parent="."]
 visible = false
-position = Vector2( 0, -8 )
+position = Vector2( 0, -8.03834 )
 texture = ExtResource( 3 )
 normal_map = ExtResource( 4 )
-offset = Vector2( 0, 8 )
+offset = Vector2( 0, 8.038 )
 
 [node name="QualitySprite" type="Sprite" parent="."]
 visible = false
@@ -40,5 +40,5 @@ position = Vector2( 0, 1 )
 texture = ExtResource( 2 )
 offset = Vector2( 0, -1 )
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

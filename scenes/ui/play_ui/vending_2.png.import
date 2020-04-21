@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/favicon.png-dced5c6149717d31b82cace91b3bf528.stex"
+path="res://.import/vending_2.png-c9175560920cf7a5ae36719609e3151e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://exports/html/favicon.png"
-dest_files=[ "res://.import/favicon.png-dced5c6149717d31b82cace91b3bf528.stex" ]
+source_file="res://scenes/ui/play_ui/vending_2.png"
+dest_files=[ "res://.import/vending_2.png-c9175560920cf7a5ae36719609e3151e.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

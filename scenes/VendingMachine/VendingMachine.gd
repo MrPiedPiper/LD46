@@ -10,6 +10,7 @@ export var hoe:PackedScene
 export var ui_price:Texture
 export var price:int = 500
 export(int,"None","Speed Fert","Quality Fert","Hoe","Inventory","Super button") var drop_type
+var is_auto_priced = false
 
 enum TYPE{
 	NONE,
@@ -25,6 +26,8 @@ onready var vending_animation = $AnimationPlayer
 onready var vending_area_collision = $Area2D/CollisionShape2D
 
 func _ready():
+	if ui_price == null:
+		is_auto_priced = true
 	match drop_type:
 		TYPE.NONE:
 			pass

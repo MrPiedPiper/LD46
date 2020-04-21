@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/8BitOfFarming.png-3279900704a311c27309d76e5f1299ce.stex"
+path="res://.import/vending_1.png-a69a9df4f5b673591c2d12130a3fadae.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://exports/html/8BitOfFarming.png"
-dest_files=[ "res://.import/8BitOfFarming.png-3279900704a311c27309d76e5f1299ce.stex" ]
+source_file="res://scenes/ui/play_ui/vending_1.png"
+dest_files=[ "res://.import/vending_1.png-a69a9df4f5b673591c2d12130a3fadae.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2

@@ -620,7 +620,7 @@ position = Vector2( 320, 288 )
 
 [node name="FenceY8" parent="YSort/Fences" instance=ExtResource( 9 )]
 position = Vector2( 160, 0 )
-open_cost = 10000
+open_cost = 3000
 is_auto_priced = false
 custom_cost_sprite = ExtResource( 11 )
 
@@ -631,6 +631,12 @@ position = Vector2( 160, 96 )
 
 [node name="Farmland3" parent="YSort/Farmland" instance=ExtResource( 3 )]
 position = Vector2( 104, 152 )
+
+[node name="Farmland7" parent="YSort/Farmland" instance=ExtResource( 3 )]
+position = Vector2( 72, 152 )
+
+[node name="Farmland8" parent="YSort/Farmland" instance=ExtResource( 3 )]
+position = Vector2( 248, 152 )
 
 [node name="Farmland4" parent="YSort/Farmland" instance=ExtResource( 3 )]
 position = Vector2( 232, 152 )

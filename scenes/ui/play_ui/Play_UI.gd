@@ -8,14 +8,21 @@ onready var equipped_texture_rect = $CanvasLayer/MarginContainer3/VBoxContainer/
 onready var animation_player = $AnimationPlayer
 onready var message_box = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer2/MarginContainer/Control/MarginContainer/TextureRect
 onready var message_box_hider = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer2/MarginContainer/Control
+onready var problem_box = $CanvasLayer/MarginContainer3/VBoxContainer/HBoxContainer
 
 export var inventory_default_icon:Texture
 export var inventory_upgrage_icon:Texture
 export var inventory_upgrage2_icon:Texture
 export var number_texture:Texture
 export(Array,Texture) var gate_price_array
+export(Array,Texture) var vending_price_array
 
 var number_dict = {}
+
+func _process(delta):
+	var problem = $CanvasLayer/MarginContainer3
+	problem.rect_size = Vector2(320,192)
+	pass
 
 func _ready():
 	for i in range(0,10):
@@ -37,7 +44,6 @@ func set_inventory_max(new_count):
 
 func add_numbers(number:int,parent_node):
 	for i in parent_node.get_children():
-		print(i)
 		i.queue_free()
 	var number_string = str(number)
 	for i in number_string:
@@ -52,8 +58,10 @@ func set_equipped(new_texture:Texture):
 	equipped_texture_rect.texture=new_texture
 
 func display_gate_message(message_number):
-	print(str("showing number",message_number))
 	display_message(gate_price_array[message_number])
+
+func display_vending_message(message_number):
+	display_message(vending_price_array[message_number])
 
 func display_message(new_message):
 	message_box.texture = new_message

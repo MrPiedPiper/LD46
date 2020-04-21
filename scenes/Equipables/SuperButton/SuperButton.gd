@@ -29,15 +29,10 @@ func swing():
 
 func activate_bar():
 	is_scanning = true
-	var camera_dimensions = Vector2(320,192)
+	var camera_dimensions = Vector2(160,96)
 	var cam_pos = Vector2(stepify(global_position.x-camera_dimensions.x,camera_dimensions.x*2)+camera_dimensions.x,stepify(global_position.y-camera_dimensions.y,camera_dimensions.y*2)+camera_dimensions.y)
-	var start_pos = cam_pos
-	var end_pos = cam_pos - camera_dimensions
-	end_pos.y = camera_dimensions.y
-	start_pos.y += camera_dimensions.y/2
-	end_pos.y = start_pos.y
-	start_pos.x += 8
-	end_pos.x -= 8
+	var start_pos = Vector2(cam_pos.x+camera_dimensions.x+8,cam_pos.y)
+	var end_pos = Vector2(cam_pos.x-camera_dimensions.x-8,cam_pos.y)
 	bar.position = start_pos
 	tween.interpolate_property(bar,"position",start_pos,end_pos,5,Tween.TRANS_LINEAR)
 	tween.start()

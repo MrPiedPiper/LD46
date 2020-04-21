@@ -12,7 +12,9 @@ export var farmland:PackedScene
 
 var score = 0
 var unlocked_gates_count = 0
-var gate_prices = [100,200,400,700,1000,1500,2000]
+var unlocked_tools_count = 0
+var gate_prices = [50,100,150,150,150,150,150]
+var tool_prices = [70,150,200,300,600]
 
 var camera_dimensions = Vector2(160,96)
 onready var camera_official_position = camera.position
@@ -47,12 +49,12 @@ func _on_Player_deposited_in_bin(item):
 	bin.play_deposit()
 	#Add up all the points 
 	var money_gained = 0
-	#Set the score variable
-	money_gained += item.item_value
+	for i in item:
+		money_gained += i.item_value
 	#Set the points on the UI
 	score += money_gained
 	ui_play.set_score(score)
-	ui_play.set_inventory_curr(player.sellable_list.size())
+	ui_play.set_inventory_curr(0)
 
 func _on_Player_swung_tool(impact_pos):
 	var tile_coord = ground_tilemap.world_to_map(impact_pos)
@@ -87,8 +89,8 @@ func _on_Player_interact_gate(gate):
 		if score >= gate_prices[unlocked_gates_count]:
 			score -= gate_prices[unlocked_gates_count]
 			ui_play.set_score(score)
-			unlocked_gates_count += 1
 			gate.open_gate()
+			unlocked_gates_count += 1
 	else:
 		if score >= gate.open_cost:
 			score -= gate.open_cost
@@ -97,36 +99,66 @@ func _on_Player_interact_gate(gate):
 
 func _on_Player_is_touching_vending(is_touching,vending):
 	if is_touching:
-		ui_play.display_message(vending.ui_price)
+		if vending.is_auto_priced:
+			ui_play.display_vending_message(unlocked_tools_count)
+		else:
+			ui_play.display_message(vending.ui_price)
 		ui_play.show_message()
 	else:
 		ui_play.hide_message()
 
 func _on_Player_interact_vending(vending):
-	if score >= vending.price:
-		score -= vending.price
-		ui_play.set_score(score)
-		vending.activate()
-		match vending.drop_type:
-			vending.TYPE.NONE:
-				pass
-			vending.TYPE.SPEED_FERT:
-				player.equip_speed_fert()
-			vending.TYPE.QUALITY_FERT:
-				player.equip_quality_fert()
-			vending.TYPE.HOE:
-				player.equip_hoe()
-			vending.TYPE.INVENTORY:
-				if player.sellable_size == 3:
-					player.sellable_size = 20
-					ui_play.set_inventory_max(20)
-					ui_play.upgrade_inventory()
-				elif player.sellable_size == 20:
-					player.sellable_size = 100
-					ui_play.set_inventory_max(100)
-					ui_play.upgrade_inventory()
-			vending.TYPE.BUTTON:
-				player.equip_button()
+	if vending.is_auto_priced:
+		if score >= tool_prices[unlocked_tools_count]:
+			score -= tool_prices[unlocked_tools_count]
+			unlocked_tools_count += 1
+			ui_play.set_score(score)
+			vending.activate()
+			match vending.drop_type:
+				vending.TYPE.NONE:
+					pass
+				vending.TYPE.SPEED_FERT:
+					player.equip_speed_fert()
+				vending.TYPE.QUALITY_FERT:
+					player.equip_quality_fert()
+				vending.TYPE.HOE:
+					player.equip_hoe()
+				vending.TYPE.INVENTORY:
+					if player.sellable_size == 3:
+						player.sellable_size = 20
+						ui_play.set_inventory_max(20)
+						ui_play.upgrade_inventory()
+					elif player.sellable_size == 20:
+						player.sellable_size = 100
+						ui_play.set_inventory_max(100)
+						ui_play.upgrade_inventory()
+				vending.TYPE.BUTTON:
+					player.equip_button()
+	else:
+		if score >= vending.price:
+			score -= vending.price
+			ui_play.set_score(score)
+			vending.activate()
+			match vending.drop_type:
+				vending.TYPE.NONE:
+					pass
+				vending.TYPE.SPEED_FERT:
+					player.equip_speed_fert()
+				vending.TYPE.QUALITY_FERT:
+					player.equip_quality_fert()
+				vending.TYPE.HOE:
+					player.equip_hoe()
+				vending.TYPE.INVENTORY:
+					if player.sellable_size == 3:
+						player.sellable_size = 20
+						ui_play.set_inventory_max(20)
+						ui_play.upgrade_inventory()
+					elif player.sellable_size == 20:
+						player.sellable_size = 100
+						ui_play.set_inventory_max(100)
+						ui_play.upgrade_inventory()
+				vending.TYPE.BUTTON:
+					player.equip_button()
 
 func _on_Player_swung_speed_fertilizer(touched_farmland):
 	touched_farmland.upgrade_speed()

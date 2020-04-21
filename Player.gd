@@ -72,9 +72,9 @@ func _process(delta):
 	
 	if Input.is_action_just_pressed("action_interact"):
 		if is_touching_bin and sellable_list.size() > 0 and inventory_list[0] is sellable_item:
+			emit_signal("deposited_in_bin",sellable_list)
 			for i in sellable_list:
 				inventory_list.erase(i)
-				emit_signal("deposited_in_bin",i)
 			sellable_list.clear()
 			update_held_item(inventory_list)
 			var new_item
